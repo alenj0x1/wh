@@ -11,7 +11,7 @@ export async function createUser(req: ICreateUserRequest) {
   const { username, password, role } = req;
 
   try {
-    const gtUser = await getUser(username);
+    const gtUser = await getUserByUsername(username);
     if (gtUser) throw new Error('the user is created.');
 
     return await UserSchema.create({
@@ -37,9 +37,20 @@ export async function getUsers() {
  * @param id
  * @returns
  */
-export async function getUser(id: string) {
+export async function getUserById(id: string) {
   try {
     return await UserSchema.findOne({ _id: id });
+  } catch (error) {}
+}
+
+/**
+ * Get a user by id
+ * @param id
+ * @returns
+ */
+export async function getUserByUsername(username: string) {
+  try {
+    return await UserSchema.findOne({ username });
   } catch (error) {}
 }
 
@@ -51,7 +62,7 @@ export async function updateUser(req: IUpdateUserRequest) {
   const { id, username, password, role } = req;
 
   try {
-    const gtUser = await getUser(id);
+    const gtUser = await getUserById(id);
     if (!gtUser) throw new Error('the user not exists.');
 
     gtUser.username = username ?? gtUser.username;
@@ -66,7 +77,7 @@ export async function updateUser(req: IUpdateUserRequest) {
 
 export async function deleteUser(id: string) {
   try {
-    const gtUser = await getUser(id);
+    const gtUser = await getUserById(id);
     if (!gtUser) throw new Error('the user not exists.');
 
     const delUser = await UserSchema.deleteOne({ _id: id });
