@@ -5,6 +5,7 @@ import path from 'path';
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import { Server } from 'socket.io';
+import { verifyFirstTimeApp } from './helpers/verify.helper';
 
 const client = new Client({
   webVersionCache: {
@@ -48,4 +49,7 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3000, () => console.log('server listening on the port: '));
+server.listen(3000, async () => {
+  await verifyFirstTimeApp();
+  console.log('server listening on the port: ');
+});

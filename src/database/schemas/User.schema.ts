@@ -1,5 +1,4 @@
 import mongoose, { SchemaTypes } from 'mongoose';
-import validator from 'validator';
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -10,9 +9,11 @@ const userSchema = new mongoose.Schema({
   password: {
     type: SchemaTypes.String,
     required: true,
-    validate: (value: string) => {
-      return validator.isStrongPassword(value);
-    },
+  },
+  role: {
+    type: SchemaTypes.Number,
+    required: true,
+    default: 2,
   },
 });
 
