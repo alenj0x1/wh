@@ -9,12 +9,12 @@ class Database {
   }
 
   _connect() {
-    if (!MONGODB_URI) throw new Error('the mongodb uri is not argumented');
+    if (!MONGODB_URI) throw new Error('The MongoDB URI is not argumented');
 
     mongoose
       .connect(MONGODB_URI)
-      .then(() => console.log('connected to database correctly'))
-      .catch((err) => console.log('database connection with errors: ', err));
+      .then(() => console.log('Connected to database correctly'))
+      .catch((err) => console.log('Database connection with errors: ', err));
   }
 }
 

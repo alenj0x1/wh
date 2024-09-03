@@ -7,7 +7,6 @@ import {
   getUsersService,
   updateUserService,
 } from '../services/users.services';
-import ResponseError from '../classes/ResponseError';
 
 const router = Router();
 
