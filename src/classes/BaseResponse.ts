@@ -1,11 +1,11 @@
 import IBaseResponse from '../interfaces/responses/IBaseResponse';
 
 export default class BaseResponse<T> {
-  ok: boolean = false;
-  data: T | null = null;
-  status: number = 404;
-  message: string = '';
-  timestamp: Date = new Date();
+  public ok: boolean = false;
+  public data: T | null = null;
+  public status: number = 404;
+  public message: string = '';
+  public timestamp: Date = new Date();
 
   constructor(options: IBaseResponse<T>) {
     const { ok, data, status, message, timestamp } = options;

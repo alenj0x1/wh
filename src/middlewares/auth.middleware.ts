@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { getUserByUsername } from '../repository/User.repository';
+import { getUserByUsername } from '../repository/users.repository';
 import BaseResponse from '../classes/BaseResponse';
 import { comparePassword } from '../helpers/hasher.helper';
 import { transformUser } from '../helpers/transform.helper';

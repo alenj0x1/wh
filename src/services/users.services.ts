@@ -2,8 +2,6 @@ import { Request } from 'express';
 import BaseResponse from '../classes/BaseResponse';
 import { transformUser, transformUsers } from '../helpers/transform.helper';
 import IUser from '../interfaces/IUser';
-import ICreateUserRequest from '../interfaces/requests/user/ICreateUserRequest';
-import IUpdateUserRequest from '../interfaces/requests/user/IUpdateUserRequest';
 import {
   createUser,
   deleteUser,
@@ -11,8 +9,9 @@ import {
   getUserByUsername,
   getUsers,
   updateUser,
-} from '../repository/User.repository';
+} from '../repository/users.repository';
 import { UserRoleEnum } from '../interfaces/miscellaneous/Enums';
+import ResponseError from '../classes/ResponseError';
 
 /**
  * Create a user service
@@ -24,16 +23,17 @@ export async function createUserService(req: Request) {
   const rsp = new BaseResponse<IUser>({});
 
   try {
-    if (req.user.role !== UserRoleEnum.SuperUser) return rsp.Unauthorized('This action is only allowed for superusers');
+    if (req.user.role !== UserRoleEnum.SuperUser)
+      throw new ResponseError({ message: 'This action is only allowed for superusers', status: 401 });
 
     const crtUser = await createUser({ username, password, role });
-    if (!crtUser) return rsp.BadRequest('User creation failed');
+    if (!crtUser) throw new ResponseError({ message: 'User creation failed' });
 
     const mpUser = transformUser(crtUser);
 
     return rsp.Ok(mpUser, 'User created correctly');
   } catch (err) {
-    return rsp.BadRequest();
+    throw err;
   }
 }
 
@@ -47,13 +47,13 @@ export async function getUserByIdService(id: string) {
 
   try {
     const gtUser = await getUserById(id);
-    if (!gtUser) return rsp.BadRequest();
+    if (!gtUser) throw new ResponseError({ message: 'User not found' });
 
     const mpUser = transformUser(gtUser);
 
     return rsp.Ok(mpUser, 'Show user');
   } catch (err) {
-    return rsp.BadRequest();
+    throw err;
   }
 }
 
@@ -67,13 +67,13 @@ export async function getUserByUsernameService(name: string) {
 
   try {
     const gtUser = await getUserByUsername(name);
-    if (!gtUser) return rsp.BadRequest();
+    if (!gtUser) throw new ResponseError({ message: 'User not found' });
 
     const mpUser = transformUser(gtUser);
 
     return rsp.Ok(mpUser, 'Show user');
   } catch (err) {
-    return rsp.BadRequest();
+    throw err;
   }
 }
 
@@ -87,13 +87,13 @@ export async function getUsersService() {
 
   try {
     const gtUsers = await getUsers();
-    if (!gtUsers) return rsp.BadRequest();
+    if (!gtUsers) throw new ResponseError({ message: 'Is rare, but, without users' });
 
     const mpUsers = transformUsers(gtUsers);
 
     return rsp.Ok(mpUsers, 'Show users');
   } catch (err) {
-    return rsp.BadRequest();
+    throw err;
   }
 }
 
@@ -107,16 +107,17 @@ export async function updateUserService(req: Request) {
   const rsp = new BaseResponse<IUser>({});
 
   try {
-    if (req.user.role !== UserRoleEnum.SuperUser) return rsp.Unauthorized('This action is only allowed for superusers');
+    if (req.user.role !== UserRoleEnum.SuperUser)
+      throw new ResponseError({ message: 'This action is only allowed for superusers', status: 401 });
 
     const updUser = await updateUser({ username, password, role, id });
-    if (!updUser) return rsp.BadRequest();
+    if (!updUser) throw new ResponseError({ message: 'Failed to update user' });
 
     const mpUser = transformUser(updUser);
 
     return rsp.Updated(mpUser, 'User updated correctly');
   } catch (err) {
-    return rsp.BadRequest();
+    throw err;
   }
 }
 
@@ -129,13 +130,14 @@ export async function deleteUserService(req: Request, id: string) {
   const rsp = new BaseResponse<boolean>({});
 
   try {
-    if (req.user.role !== UserRoleEnum.SuperUser) return rsp.Unauthorized('This action is only allowed for superusers');
+    if (req.user.role !== UserRoleEnum.SuperUser)
+      throw new ResponseError({ message: 'This action is only allowed for superusers', status: 401 });
 
-    const updUser = await deleteUser(id);
-    if (!updUser) return rsp.BadRequest();
+    const delUser = await deleteUser(id);
+    if (!delUser) throw new ResponseError({ message: 'Failed to delete user' });
 
     return rsp.Ok(true, 'User updated correctly');
   } catch (err) {
-    return rsp.BadRequest();
+    throw err;
   }
 }

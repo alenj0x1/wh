@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { createUser, getUsers } from '../repository/User.repository';
+import { createUser, getUsers } from '../repository/users.repository';
 import { UserRoleEnum } from '../interfaces/miscellaneous/Enums';
 import { hashPassword } from './hasher.helper';
 

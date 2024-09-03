@@ -8,6 +8,7 @@ import { Server } from 'socket.io';
 import { verifyFirstTimeApp } from './helpers/verify.helper';
 import userRoutes from './routes/users.routes';
 import authMiddleware from './middlewares/auth.middleware';
+import errorHandler from './middlewares/errorHandler.middleware';
 
 const client = new Client({
   webVersionCache: {
@@ -19,6 +20,8 @@ const client = new Client({
 let clientSigned = false;
 
 const app = express();
+
+// Middlewares
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -35,6 +38,9 @@ app.set('view engine', 'pug');
 app.get('/', (_req: Request, res: Response) => {
   res.render('index');
 });
+
+// Error handler middleware
+app.use(errorHandler);
 
 client.on('ready', () => {
   clientSigned = true;

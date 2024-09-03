@@ -1,4 +1,6 @@
+import ResponseError from '../classes/ResponseError';
 import UserSchema from '../database/schemas/User.schema';
+import { hashPassword } from '../helpers/hasher.helper';
 import ICreateUserRequest from '../interfaces/requests/user/ICreateUserRequest';
 import IUpdateUserRequest from '../interfaces/requests/user/IUpdateUserRequest';
 
@@ -12,14 +14,16 @@ export async function createUser(req: ICreateUserRequest) {
 
   try {
     const gtUser = await getUserByUsername(username);
-    if (gtUser) throw new Error('the user is created.');
+    if (gtUser) throw new ResponseError({ message: 'The user is previously created.' });
 
     return await UserSchema.create({
       username,
-      password,
+      password: await hashPassword(password),
       role,
     });
-  } catch (error) {}
+  } catch (err: any) {
+    throw new ResponseError({ message: err.message });
+  }
 }
 
 /**
@@ -29,7 +33,9 @@ export async function createUser(req: ICreateUserRequest) {
 export async function getUsers() {
   try {
     return await UserSchema.find({});
-  } catch (error) {}
+  } catch (err: any) {
+    throw new ResponseError({ message: err.message });
+  }
 }
 
 /**
@@ -40,7 +46,9 @@ export async function getUsers() {
 export async function getUserById(id: string) {
   try {
     return await UserSchema.findOne({ _id: id });
-  } catch (error) {}
+  } catch (err: any) {
+    throw new ResponseError({ message: err.message });
+  }
 }
 
 /**
@@ -51,7 +59,9 @@ export async function getUserById(id: string) {
 export async function getUserByUsername(username: string) {
   try {
     return await UserSchema.findOne({ username });
-  } catch (error) {}
+  } catch (err: any) {
+    throw new ResponseError({ message: err.message });
+  }
 }
 
 /**
@@ -63,26 +73,30 @@ export async function updateUser(req: IUpdateUserRequest) {
 
   try {
     const gtUser = await getUserById(id);
-    if (!gtUser) throw new Error('the user not exists.');
+    if (!gtUser) throw new Error('The user not exists.');
 
     gtUser.username = username ?? gtUser.username;
-    gtUser.password = username ?? gtUser.password;
+    gtUser.password = password ?? gtUser.password;
     gtUser.role = role ?? gtUser.role;
 
     await UserSchema.updateOne({ _id: id }, gtUser);
 
     return gtUser;
-  } catch (error) {}
+  } catch (err: any) {
+    throw new ResponseError({ message: err.message });
+  }
 }
 
 export async function deleteUser(id: string) {
   try {
     const gtUser = await getUserById(id);
-    if (!gtUser) throw new Error('the user not exists.');
+    if (!gtUser) throw new Error('The user not exists.');
 
     const delUser = await UserSchema.deleteOne({ _id: id });
     if (delUser.deletedCount == 0) return false;
 
     return true;
-  } catch (error) {}
+  } catch (err: any) {
+    throw new ResponseError({ message: err.message });
+  }
 }
