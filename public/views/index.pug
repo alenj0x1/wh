@@ -3,7 +3,18 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Document
-  body 
+    title dockerwh 🐳
+
+    script(src="https://cdn.tailwindcss.com")
+    link(rel="stylesheet", href="/styles/index.css")
+  body(class="min-h-screen flex flex-col justify-center items-center gap-4")
+    main(class="bg-zinc-100 p-16 flex flex-col justify-center items-center rounded-xl gap-6 shadow")
+      header(class="flex flex-col items-center justify-center gap-4")
+        span(id="docker" class="block text-5xl gap-4 grayscale")="🐳"
+        h1(class="text-4xl font-bold text-zinc-600")="dockerwh"
+        span(id="status" class="text-md text-zinc-600 font-medium")="Wait a moment..."
+      div(id="qr-code")
+
+    script(src="https://cdn.jsdelivr.net/npm/qr-creator/dist/qr-creator.min.js")
     script(src="/socket.io/socket.io.js")
     script(src="/scripts/index.js")

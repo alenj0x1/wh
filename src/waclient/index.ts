@@ -1,22 +1,24 @@
-import { Client } from 'whatsapp-web.js';
-import IOWebSocket from '../websocket';
+import { Client, LocalAuth } from 'whatsapp-web.js';
+import qrEvent from './events/qr.event';
+import readyEvent from './events/ready.event';
+import disconnectedEvent from './events/disconnected.event';
 
+// Client setup
 const WAClient = new Client({
+  authStrategy: new LocalAuth(),
   webVersionCache: {
-    type: 'remote',
-    remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html',
+    type: 'none',
+  },
+  puppeteer: {
+    headless: true,
   },
 });
 
-let clientSigned = false;
+// Events
+WAClient.once('ready', readyEvent);
+WAClient.on('qr', qrEvent);
+WAClient.on('disconnected', disconnectedEvent);
 
-WAClient.on('ready', () => {
-  clientSigned = true;
-  console.log('wh-client is ready');
-});
-
-WAClient.on('qr', (qr) => {
-  IOWebSocket.emit('qrcode', qr);
-});
+WAClient.initialize();
 
 export default WAClient;

@@ -2,8 +2,9 @@ import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import authMiddleware from './middlewares/auth.middleware';
-import userRouter from './routes/users.routes';
 import errorHandler from './middlewares/errorHandler.middleware';
+import userRouter from './routes/users.routes';
+import messagesRouter from './routes/messages.routes';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 app.use('/users', [authMiddleware], userRouter);
+app.use('/messages', [authMiddleware], messagesRouter);
 
 // Public and render
 app.use(express.static(path.join(__dirname, '../../public')));
