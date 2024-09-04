@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "da50a61d-fb93-48aa-bfb0-d9355623ea32",
+		"name": "dockerwh",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33824111"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "new user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "username",
+								"value": "{{USERNAME}}",
+								"type": "text"
+							},
+							{
+								"key": "password",
+								"value": "{{PASSWORD}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"test\",\r\n    \"role\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/new",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a user by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "username",
+								"value": "{{USERNAME}}",
+								"type": "text"
+							},
+							{
+								"key": "password",
+								"value": "{{PASSWORD}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/users/66d5d6633da6803d8babab05",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"66d5d6633da6803d8babab05"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a user by username",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "username",
+								"value": "{{USERNAME}}",
+								"type": "text"
+							},
+							{
+								"key": "password",
+								"value": "{{PASSWORD}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/users/66d5d6633da6803d8babab05",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"66d5d6633da6803d8babab05"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "username",
+								"value": "{{USERNAME}}",
+								"type": "text"
+							},
+							{
+								"key": "password",
+								"value": "{{PASSWORD}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "messages",
+			"item": [
+				{
+					"name": "send a message to person",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
