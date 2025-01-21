@@ -5,7 +5,7 @@
   "author": "alemndev <140274341+alemndev@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/index.ts",
+    "start:dev": "nodemon src/index.ts",
     "build": "tsc",
     "start": "tsc && node ."
   },

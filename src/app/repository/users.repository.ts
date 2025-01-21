@@ -18,7 +18,7 @@ export async function createUser(req: ICreateUserRequest) {
 
     return await UserSchema.create({
       username,
-      password: await hashPassword(password),
+      password: password,
       role,
     });
   } catch (err: any) {
